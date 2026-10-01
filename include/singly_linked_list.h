@@ -105,9 +105,9 @@ template <typename T>
 bool SLinkedList<T>::pop_front() {
 // TODO: Implement the pop_front function for the SLinkedList class
     if (empty()) { return false; } //exit early
-    SNode<T>*& current = head_->next; //save location of new head
-    delete head_; //delete saved head
-    head_ = current; //save new head
+    SNode<T>* forDelete = head_; //save location head
+    head_ = head_->next; // change head 
+    delete forDelete; //delete saved head, not actual head
     size_--;
     return true;
 }
@@ -117,11 +117,12 @@ bool SLinkedList<T>::pop_back() {
 // TODO: Implement the pop_back function for the SLinkedList class
     if (empty()) { return false; } //exit early
     SNode<T>* newTail = head_;
-    while (newTail->next->next != nullptr) { //stop before end
+    while (newTail->next->next != nullptr) { //stop before last node
         newTail = newTail->next;
     }
-    delete newTail->next; //delete end 
-    newTail->next = nullptr; //unpoint from nonexisting tail
+    SNode<T>* forDelete = newTail->next;
+    newTail->next = nullptr; //unpoint from existing tail, cannot do if nonexistent
+    delete forDelete; //delete saved end 
     size_--;
     return true;
 }

@@ -117,10 +117,10 @@ template <typename T>
 bool DLinkedList<T>::pop_front() {
     if (empty()) {return false;} //early exit
     DNode<T>*& newFront = header_->next->next; //save new front
-    DNode<T>*& forDelete = newFront->prev; 
-    header_->next = newFront; //undock old from header
-    delete forDelete;
+    DNode<T>* forDelete = newFront->prev; 
+    header_->next = newFront; 
     newFront->prev = header_; //dock new front to header
+    delete forDelete; // delete from previously saved address
     size_ --;
     return true;
 }
@@ -130,10 +130,10 @@ template <typename T>
 bool DLinkedList<T>::pop_back() {
     if (empty()) {return false;} //exit if nothing to pop
     DNode<T>*& newBack = trailer_->prev->prev; //save location before last 
-    DNode<T>*& forDelete = newBack->next; //save location of last
-    trailer_->prev = newBack; //undock old from trailer
-    delete forDelete; 
+    DNode<T>* forDelete = newBack->next; //save location of last
+    trailer_->prev = newBack; 
     newBack->next = trailer_; //dock new last to trailer
+    delete forDelete; 
     size_ --;
     return true;
 }
