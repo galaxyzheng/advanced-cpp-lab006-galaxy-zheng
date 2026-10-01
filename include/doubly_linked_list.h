@@ -143,7 +143,7 @@ template <typename T>
 T& DLinkedList<T>::front() {
     if (empty()) {
         throw std::out_of_range("SLinkedList is empty");
-    } return header_->value;
+    } return header_->next->value;
 }
 
 template <typename T>
@@ -151,7 +151,7 @@ const T& DLinkedList<T>::front() const {
 //TODO: Implement the const version of the front function for the DLinkedList class
     if (empty()) {
         throw std::out_of_range("SLinkedList is empty");
-    } return header_->value;
+    } return header_->next->value;
 }
 
 template <typename T>
@@ -159,7 +159,7 @@ T& DLinkedList<T>::back() {
 //TODO: Implement the back function for the DLinkedList class
     if (empty()) {
         throw std::out_of_range("SLinkedList is empty");
-    } return trailer_->value;
+    } return trailer_->prev->value;
 }
 
 template <typename T>
@@ -167,7 +167,7 @@ const T& DLinkedList<T>::back() const {
 //TODO: Implement the const version of the back function for the DLinkedList class
     if (empty()) {
         throw std::out_of_range("SLinkedList is empty");
-    } return trailer_->value;
+    } return trailer_->prev->value;
 }
 
 template <typename T>
