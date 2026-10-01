@@ -54,7 +54,7 @@ SLinkedList<T>::SLinkedList(const SLinkedList& other) : head_(nullptr), size_(ot
     if (!other.empty()) {
         SNode<T>* prev = new SNode<T>(other.head_->value, nullptr); //completely distinct new head
         head_ = prev;
-        for (SNode<T>*& current = other.head_->next; current != nullptr; current = current->next) {
+        for (SNode<T>* current = other.head_->next; current != nullptr; current = current->next) {
             SNode<T>* n = new SNode<T>(current->value, nullptr); //create distinct copy of nodes
             prev->next = n; //link previous
             prev = n; //move 
@@ -70,7 +70,7 @@ SLinkedList<T>& SLinkedList<T>::operator=(const SLinkedList& other) {
         if (!other.empty()) {
             SNode<T>* prev = new SNode<T>(other.head_->value, nullptr);
             head_ = prev;
-            for (SNode<T>*& current = other.head_->next; current != nullptr; current = current->next) {
+            for (SNode<T>* current = other.head_->next; current != nullptr; current = current->next) {
                 SNode<T>* n = new SNode<T>(current->value, nullptr);
                 prev->next = n;
                 prev = n;
@@ -78,6 +78,7 @@ SLinkedList<T>& SLinkedList<T>::operator=(const SLinkedList& other) {
         }
         size_ = other.size_;
     }
+    return *this;
 }
 
 template <typename T>
@@ -92,8 +93,9 @@ template <typename T>
 void SLinkedList<T>::push_back(const T& value) {
 // TODO: Implement the push_back function for the SLinkedList class
     SNode<T>* tailNode = new SNode<T>(value, nullptr); //new tail, needs link to end 
-    for (SNode<T>*& oldTail = head_;  oldTail->next != nullptr; oldTail = oldTail->next) { //find old tail
-        continue;
+    SNode<T>* oldTail = head_;
+    while (oldTail->next != nullptr) { //find old tail
+        oldTail = oldTail->next;
     }
     oldTail->next = tailNode; //link to new tail
     size_++;
@@ -114,10 +116,11 @@ template <typename T>
 bool SLinkedList<T>::pop_back() {
 // TODO: Implement the pop_back function for the SLinkedList class
     if (empty()) { return false; } //exit early
-    for (SNode<T>*& newTail = head_; newTail->next->next != nullptr; newTail = newTail->next) { //stop before end
-        continue;
+    SNode<T>* newTail = head_;
+    while (newTail->next->next != nullptr) { //stop before end
+        newTail = newTail->next;
     }
-    delete newTail->next //delete end 
+    delete newTail->next; //delete end 
     newTail->next = nullptr; //unpoint from nonexisting tail
     size_--;
     return true;
@@ -149,13 +152,13 @@ std::size_t SLinkedList<T>::size() const noexcept {
 template <typename T>
 bool SLinkedList<T>::empty() const noexcept {
 // TODO: Implement the empty function for the SLinkedList class
-    (head_ == nullptr) ? return true : return false;
+    return (head_ == nullptr) ? true : false;
 }
 
 template <typename T>
 bool SLinkedList<T>::contains(const T& value) const {
 // TODO: Implement the contains function for the SLinkedList class
-    for (SNode<T>*& current = head_; current != nullptr; current = current->next) {
+    for (SNode<T>* current = head_; current != nullptr; current = current->next) {
         if (current->value == value) { return true; }
     }
     return false;
@@ -165,7 +168,7 @@ template <typename T>
 std::vector<T> SLinkedList<T>::to_vector() const {
     std::vector<T> values;
     values.reserve(size_);
-    for (SNode<T>*& current = head_; current != nullptr; current = current->next) {
+    for (SNode<T>* current = head_; current != nullptr; current = current->next) {
         values.push_back(current->value);
     }
     return values;
