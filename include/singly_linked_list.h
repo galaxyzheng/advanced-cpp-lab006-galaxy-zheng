@@ -116,12 +116,13 @@ template <typename T>
 bool SLinkedList<T>::pop_back() {
 // TODO: Implement the pop_back function for the SLinkedList class
     if (empty()) { return false; } //exit early
-    SNode<T>* newTail = head_;
-    while (newTail->next->next != nullptr) { //stop before last node
-        newTail = newTail->next;
+    SNode<T>*& nodes[size_];
+    nodes[0] = head_; //not copying pointers, save actual pointers with reference
+    for (std::size_t i = 1; i < size_; i++) {
+        nodes[i] = nodes[i-1]->next;
     }
-    SNode<T>* forDelete = newTail->next;
-    newTail->next = nullptr; //unpoint from existing tail, cannot do if nonexistent
+    SNode<T>* forDelete = nodes[size_]; //save last node location
+    nodes[size_-1]->next = nullptr; //unpoint from existing tail, cannot do if nonexistent
     delete forDelete; //delete saved end 
     size_--;
     return true;
