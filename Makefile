@@ -1,7 +1,7 @@
 CXX := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -pedantic -Iinclude -Itests
 BUILD_DIR := build
-TEST_TARGET := $(BUILD_DIR)/test_linked_lists
+TEST_TARGET := $(BUILD_DIR)/main
 
 .PHONY: all test clean
 
