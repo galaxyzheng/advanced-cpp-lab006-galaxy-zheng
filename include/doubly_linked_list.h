@@ -63,14 +63,15 @@ DLinkedList<T>::~DLinkedList() {
 //TODO: Implement the copy constructor for the DLinkedList class.
 template <typename T>
 DLinkedList<T>::DLinkedList(const DLinkedList& other) : size_(other.size_) {
-    DNode<T>* prev = new DNode<T>(other.header_->value, nullptr, nullptr); //new header (completely distinct from old header)
+    DNode<T>* prev = new DNode<T>(T(), nullptr, nullptr); //new header (completely distinct from old header)
     header_ = prev;
-    for (DNode<T>* current = other.header_->next; current->next != nullptr; current = current->next) { //every node after until trailer
+    for (DNode<T>* current = other.header_->next; current != other.trailer_; current = current->next) { //every node after until trailer
             DNode<T>* n = new DNode<T>(current->value, prev, nullptr); //completely new node, linked to newly created prev node
             prev->next = n; //link prev to now created new node
             prev = n; //move to next
     }
-    trailer_ = new DNode<T>(other.trailer_->value, prev, nullptr);
+    trailer_ = new DNode<T>(T(), prev, nullptr);
+    prev->next = trailer_;
 }
 
 // TODO: Implement the assignment operator for the DLinkedList class.
@@ -78,14 +79,15 @@ template <typename T>
 DLinkedList<T>& DLinkedList<T>::operator=(const DLinkedList& other) {
     if (this != &other) { //self assignment protection
         clear(); delete header_; delete trailer_; //empty any existing
-        DNode<T>* prev = new DNode<T>(other.header_->value, nullptr, nullptr);
+        DNode<T>* prev = new DNode<T>(T(), nullptr, nullptr);
         header_ = prev;
-        for (DNode<T>* current = other.header_->next; current->next != nullptr; current = current->next) {
+        for (DNode<T>* current = other.header_->next; current != other.trailer_; current = current->next) {
                 DNode<T>* n = new DNode<T>(current->value, prev, nullptr);
                 prev->next = n;
                 prev = n;
         }
-        trailer_ = new DNode<T>(other.trailer_->value, prev, nullptr);
+        trailer_ = new DNode<T>(T(), prev, nullptr);
+        prev->next = trailer_;
         size_ = other.size_; 
     }
     return *this;
